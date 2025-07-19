@@ -1,25 +1,51 @@
-# README
+# Acme Widget Basket System
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Description
 
-Things you may want to cover:
+Proof of concept for a widget sales system built using Ruby 3.2.2 and Rails 8 (API mode).  
+This system calculates the total price for a basket of products, applying delivery rules and special offers.
 
-* Ruby version
+### Features
 
-* System dependencies
+- Products with unique codes and prices
+- Delivery charges based on basket total
+- Special offer: **"Buy one Red Widget (R01), get second half price"**
+- No UI or database — designed for CLI or test-based interaction
+- Easily extendable for new offers or rules
 
-* Configuration
+---
 
-* Database creation
+### Setup
 
-* Database initialization
+```
+bundle install
+```
 
-* How to run the test suite
+### How to Run (from Rails Console)
 
-* Services (job queues, cache servers, search engines, etc.)
+```
+bin/rails console
+```
 
-* Deployment instructions
+Then inside the console:
+```
+basket = BasketFactory.build
+basket.add("R01")
+basket.add("R01")
+puts basket.total
+```
 
-* ...
-# acme-basket
+### How to Run Tests
+
+```
+bundle exec rspec
+```
+
+### Example Scenarios (for quick testing)
+
+```
+BasketFactory.build.tap { |b| b.add("B01"); b.add("G01"); puts b.total }       # => 37.85
+BasketFactory.build.tap { |b| b.add("R01"); b.add("R01"); puts b.total }       # => 54.37
+BasketFactory.build.tap { |b| b.add("R01"); b.add("G01"); puts b.total }       # => 60.85
+BasketFactory.build.tap { |b| b.add("B01"); b.add("B01"); b.add("R01"); b.add("R01"); b.add("R01"); puts b.total } # => 98.27
+```
